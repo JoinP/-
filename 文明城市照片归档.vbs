@@ -1,28 +1,28 @@
 Option Explicit
 'on error resume next 
-'******³£Êı
+'******å¸¸æ•°
 Const ImageName2Excel 	= 	"ImageNames2Excel.xls"
 Const ExcelTemplate 	= 	"ExcelTemplate.xls"
 Const WordTemplate 		= 	"WordTemplate.doc"
-Const ExcelGen 			= 	"µÚÆß×é¶½²éÇé¿ö.xls"
-Const WordGen 			= 	"µÚÆß×é¶½²éÇé¿ö.doc"
-Const Person1 			= 	"ĞÏÈÊÃñ"
-Const Person2 			= 	"ÓÈ¾ü"
-Const PersonFolder1 	= 	"X"
-Const PersonFolder2 	= 	"Y"
-Const PersonSign1 	= 	"@Hawkinsky"
-Const PersonSign2 	= 	"@YoYo"
-Const sSheetImageName 	= 	"ÕÕÆ¬ÎÊÌâ¶ÔÓ¦"   
-Const sSheetPlbName 	= 	"ÓĞÎÊÌâÃèÊöµÄÕÕÆ¬"
-Const sColPerson		=	"ÅÄÉãÈË"		'Column = 1
-Const sColImageBaseName		=	"ÕÕÆ¬Ãû"		'Column = 2
-Const sColImageExt		=	"ÕÕÆ¬À©Õ¹Ãû"	'Column = 3
-Const sColSite			=	"Î»ÖÃ"			'Column = 4
-Const sColPlbSite		=	"ÎÊÌâÎ»ÖÃ"		'Column = 5
-Const sColPlbDescription	=	"ÎÊÌâÃèÊö"	'Column = 6
+Const ExcelGen 			= 	"ç¬¬ä¸ƒç»„ç£æŸ¥æƒ…å†µ.xls"
+Const WordGen 			= 	"ç¬¬ä¸ƒç»„ç£æŸ¥æƒ…å†µ.doc"
+Const Person1 			= 	"æ‹æ‘„äºº1"
+Const Person2 			= 	"æ‹æ‘„äºº2"
+Const PersonFolder1 	= 	"æ‹æ‘„äºº1"
+Const PersonFolder2 	= 	"æ‹æ‘„äºº1"
+Const PersonSign1 	= 	"@æ‹æ‘„äºº1"
+Const PersonSign2 	= 	"@æ‹æ‘„äºº2"
+Const sSheetImageName 	= 	"ç…§ç‰‡é—®é¢˜å¯¹åº”"   
+Const sSheetPlbName 	= 	"æœ‰é—®é¢˜æè¿°çš„ç…§ç‰‡"
+Const sColPerson		=	"æ‹æ‘„äºº"		'Column = 1
+Const sColImageBaseName		=	"ç…§ç‰‡å"		'Column = 2
+Const sColImageExt		=	"ç…§ç‰‡æ‰©å±•å"		'Column = 3
+Const sColSite			=	"ä½ç½®"		'Column = 4
+Const sColPlbSite		=	"é—®é¢˜ä½ç½®"		'Column = 5
+Const sColPlbDescription	=	"é—®é¢˜æè¿°"		'Column = 6
 
 
-'******VBScript ÖĞÓÃµ½µÄOffice VBA ³£Êı
+'******VBScript ä¸­ç”¨åˆ°çš„Office VBA å¸¸æ•°
 Const Original_Folder = "ORIGINAL"
 Const wdGoToBookmark = 1
 Const xlAscending = 1
@@ -51,7 +51,7 @@ Const wdWord10ListBehavior = 2
 Const wdWord = 2
 Const wdWithInTable = 12
 Const wdCollapseStart = 1
-'******* È«¾Ö±äÁ¿
+'******* å…¨å±€å˜é‡
 Dim StdIn	: Set StdIn = WScript.StdIn
 Dim StdOut	: Set StdOut = WScript
 Dim oShell 	: Set oShell = CreateObject("WScript.Shell")
@@ -75,20 +75,20 @@ aPerson(0,2)	=	PersonSign1
 aPerson(1,0)	=	Person2
 aPerson(1,1)	=	PersonFolder2
 aPerson(1,2)	=	PersonSign2
-sDate = Year(Date) & "Äê" & Month(Date) &"ÔÂ" & Day(Date) & "ÈÕ"
+sDate = Year(Date) & "å¹´" & Month(Date) &"æœˆ" & Day(Date) & "æ—¥"
 sDate_Folder = Year(Date) & Right("0"& Month(Date),2)  & Right("0" & Day(Date),2)
 'sWorkingPath = PathCombine(sShellPath, sDate_Folder)
 sWorkingPath = sShellPath & "\" & sDate_Folder
 Dim strPattern 
-strPattern = "IMG_\d{8}_\d{6}\s"						'ÎÄ¼şÃûÖĞÀàËÆIMG_20170706_103020 »ªÎªAndroidÊÖ»úÕÕÆ¬
-strPattern = strPattern & "|" & "IMG_\d{8}_\d{6}_\d\s"	'ÎÄ¼şÃûÖĞÀàËÆIMG_20170706_103020_1 »ªÎªAndroidÊÖ»úÕÕÆ¬
-strPattern = strPattern & "|" & "Î¢ĞÅÍ¼Æ¬_\d{14}\s"		'ÎÄ¼şÃûÖĞÀàËÆÎ¢ĞÅÍ¼Æ¬_20170706103020 ×Ö·û ÕÕÆ¬ÊÇÓÉÎ¢ĞÅÖĞÏÂÔØÊ±Éú³É
-strPattern = strPattern & "|" & "_ËõĞ¡´óĞ¡"				'ÎÄ¼şÃûÖĞÀàËÆ _ËõĞ¡´óĞ¡   ACDSEE ËõĞ¡ÕÕÆ¬Ê±²úÉú
-strPattern = strPattern & "|" & "_shrink"				'ÎÄ¼şÃûÖĞÀàËÆ _shrink   magick ËõĞ¡ÕÕÆ¬Ê±×Ô¶¨Òå²úÉú
-strPattern = strPattern & "|" & ".jpg"					'ÎÄ¼şÃûÖĞÀ©Õ¹Ãû
-strPattern = strPattern & "|" & ".tif"					'ÎÄ¼şÃûÖĞÀ©Õ¹Ãû
-strPattern = strPattern & "|" & ".jpeg"					'ÎÄ¼şÃûÖĞÕÕÆ¬À©Õ¹Ãû
-strPattern = strPattern & "|" & "\s"					'ÎÄ¼şÃûÖĞ¿Õ¸ñ
+strPattern = "IMG_\d{8}_\d{6}\s"						'æ–‡ä»¶åä¸­ç±»ä¼¼IMG_20170706_103020 åä¸ºAndroidæ‰‹æœºç…§ç‰‡
+strPattern = strPattern & "|" & "IMG_\d{8}_\d{6}_\d\s"	'æ–‡ä»¶åä¸­ç±»ä¼¼IMG_20170706_103020_1 åä¸ºAndroidæ‰‹æœºç…§ç‰‡
+strPattern = strPattern & "|" & "å¾®ä¿¡å›¾ç‰‡_\d{14}\s"		'æ–‡ä»¶åä¸­ç±»ä¼¼å¾®ä¿¡å›¾ç‰‡_20170706103020 å­—ç¬¦ ç…§ç‰‡æ˜¯ç”±å¾®ä¿¡ä¸­ä¸‹è½½æ—¶ç”Ÿæˆ
+strPattern = strPattern & "|" & "_ç¼©å°å¤§å°"				'æ–‡ä»¶åä¸­ç±»ä¼¼ _ç¼©å°å¤§å°   ACDSEE ç¼©å°ç…§ç‰‡æ—¶äº§ç”Ÿ
+strPattern = strPattern & "|" & "_shrink"				'æ–‡ä»¶åä¸­ç±»ä¼¼ _shrink   magick ç¼©å°ç…§ç‰‡æ—¶è‡ªå®šä¹‰äº§ç”Ÿ
+strPattern = strPattern & "|" & ".jpg"					'æ–‡ä»¶åä¸­æ‰©å±•å
+strPattern = strPattern & "|" & ".tif"					'æ–‡ä»¶åä¸­æ‰©å±•å
+strPattern = strPattern & "|" & ".jpeg"					'æ–‡ä»¶åä¸­ç…§ç‰‡æ‰©å±•å
+strPattern = strPattern & "|" & "\s"					'æ–‡ä»¶åä¸­ç©ºæ ¼
 for iPerson = LBound(aPerson) to UBound(aPerson) -1
 	strPattern = strPattern & "|" & aPerson(iPerson,0)
 Next
@@ -100,28 +100,28 @@ Set oWorkingFolder = oFso.GetFolder(sWorkingPath)
 
 Dim sInfo 
 Dim sStep
-sInfo = sInfo & "ÇëÊäÈëÏà¹Ø²½ÖèµÄÊı×Ö" & vbCrlf
-sInfo = sInfo & "0¡¢Ö»Éú³É¹¤×÷Ä¿Â¼" & vbCrlf
-sInfo = sInfo & "1¡¢°ÑÍ¼Æ¬Ãû¼ÇÂ¼µ½ExcelÖĞÈ¥£¬È»ºóÊÖ¹¤ÌîĞ´µØµãÓëÎÊÌâÃèÊö" & vbCrlf
-sInfo = sInfo & "2¡¢¸ù¾İÌîĞ´µÄµØµãºÍÎÊÌâÃèÊöÉú³ÉÎÊÌâ¼ÇÂ¼£¬ËõĞ¡Í¼Æ¬´óĞ¡¡¢±£´æÔ­Ê¼Í¼Æ¬" & vbCrlf
-sInfo = sInfo & "3¡¢°´ÕÕÄ£°åÉú³ÉExcelºÍWord¶½²é±¨¸æ" & vbCrlf
-sInfo = sInfo & "ÆäËû¡¢Ö»Éú³É¹¤×÷Ä¿Â¼¡£¹¤×÷Ä¿Â¼Éú³Éºó£¬°ÑÊÖ»úµÈÅÄµÄÕÕÆ¬´«ËÍµ½¼ÆËã»úºóÊÖ¹¤±£´æµ½ÏàÓ¦µÄ¹¤×÷Ä¿Â¼ÏÂ" & vbCrlf
+sInfo = sInfo & "è¯·è¾“å…¥ç›¸å…³æ­¥éª¤çš„æ•°å­—" & vbCrlf
+sInfo = sInfo & "0ã€åªç”Ÿæˆå·¥ä½œç›®å½•" & vbCrlf
+sInfo = sInfo & "1ã€æŠŠå›¾ç‰‡åè®°å½•åˆ°Excelä¸­å»ï¼Œç„¶åæ‰‹å·¥å¡«å†™åœ°ç‚¹ä¸é—®é¢˜æè¿°" & vbCrlf
+sInfo = sInfo & "2ã€æ ¹æ®å¡«å†™çš„åœ°ç‚¹å’Œé—®é¢˜æè¿°ç”Ÿæˆé—®é¢˜è®°å½•ï¼Œç¼©å°å›¾ç‰‡å¤§å°ã€ä¿å­˜åŸå§‹å›¾ç‰‡" & vbCrlf
+sInfo = sInfo & "3ã€æŒ‰ç…§æ¨¡æ¿ç”ŸæˆExcelå’ŒWordç£æŸ¥æŠ¥å‘Š" & vbCrlf
+sInfo = sInfo & "å…¶ä»–ã€åªç”Ÿæˆå·¥ä½œç›®å½•ã€‚å·¥ä½œç›®å½•ç”Ÿæˆåï¼ŒæŠŠæ‰‹æœºç­‰æ‹çš„ç…§ç‰‡ä¼ é€åˆ°è®¡ç®—æœºåæ‰‹å·¥ä¿å­˜åˆ°ç›¸åº”çš„å·¥ä½œç›®å½•ä¸‹" & vbCrlf
 
-sStep = InputBox(sInfo, "Ñ¡ÔñÔËĞĞ²½Öè",1)
+sStep = InputBox(sInfo, "é€‰æ‹©è¿è¡Œæ­¥éª¤",1)
 Select Case sStep
 Case "1"
-	'°ÑÍ¼Æ¬Ãû¼ÇÂ¼µ½ExcelÖĞÈ¥£¬È»ºóÊÖ¹¤ÌîĞ´µØµãÓëÎÊÌâÃèÊö
+	'æŠŠå›¾ç‰‡åè®°å½•åˆ°Excelä¸­å»ï¼Œç„¶åæ‰‹å·¥å¡«å†™åœ°ç‚¹ä¸é—®é¢˜æè¿°
 	ImagesName2Excel
 Case "2"
-	'¸ù¾İÌîĞ´µÄµØµãºÍÎÊÌâÃèÊöÉú³ÉÎÊÌâ¼ÇÂ¼£¬ËõĞ¡Í¼Æ¬´óĞ¡¡¢±£´æÔ­Ê¼Í¼Æ¬
+	'æ ¹æ®å¡«å†™çš„åœ°ç‚¹å’Œé—®é¢˜æè¿°ç”Ÿæˆé—®é¢˜è®°å½•ï¼Œç¼©å°å›¾ç‰‡å¤§å°ã€ä¿å­˜åŸå§‹å›¾ç‰‡
 	RenameImagesFromExcel
 Case "3"
-	'°´ÕÕÄ£°åÉú³ÉExcelºÍWord¶½²é±¨¸æ
+	'æŒ‰ç…§æ¨¡æ¿ç”ŸæˆExcelå’ŒWordç£æŸ¥æŠ¥å‘Š
 	CreateExcelWordFromTemplate
 Case Else
-	'³ö´íÀ²
-	'StdOut.Echo "³ö´íÀ²£¬ÔõÃ´µ½ÕâÀïÀ´ÁË?"
-	'´´½¨¹¤×÷Ä¿Â¼
+	'å‡ºé”™å•¦
+	'StdOut.Echo "å‡ºé”™å•¦ï¼Œæ€ä¹ˆåˆ°è¿™é‡Œæ¥äº†?"
+	'åˆ›å»ºå·¥ä½œç›®å½•
 End Select
 
 
@@ -150,14 +150,14 @@ Function RegFileName(ByVal sFileName)
 	End If
 End Function
 
-'*****½«Á½¸öÄ¿Â¼Â·¾¶ºÏ²¢£¬µÚÒ»¸öÎª¾ø¶ÔÂ·¾¶£¬µÚ¶ş¸öÎªÏà¶ÔÂ·¾¶£¬ÒÔ\Îª½áÎ²
+'*****å°†ä¸¤ä¸ªç›®å½•è·¯å¾„åˆå¹¶ï¼Œç¬¬ä¸€ä¸ªä¸ºç»å¯¹è·¯å¾„ï¼Œç¬¬äºŒä¸ªä¸ºç›¸å¯¹è·¯å¾„ï¼Œä»¥\ä¸ºç»“å°¾
 Function  PathCombine( sPath1, sPath2)
 	If InstrRev( sPath1 , "\") <> len(sPath1) Then	sPath1 = sPath1 + "\"
 	If InstrRev( sPath2 , "\") <> len(sPath2) Then	sPath2 = sPath2 + "\"
 	PathCombine = sPath1 & sPath2
 End Function
 
-'*****´´½¨¹¤×÷Ä¿Â¼
+'*****åˆ›å»ºå·¥ä½œç›®å½•
 Sub CreateWorkingDayFolder
 	Dim bFolderExist
 	Dim oShellFolder, aFolder, bFolder , f 
@@ -178,9 +178,9 @@ Sub CreateWorkingDayFolder
 End Sub
 
 
-	'*****½«¹¤×÷Ä¿Â¼ÏÂÍ¼Æ¬ÎÄ¼şÃû¼ÇÂ¼ÏÂÀ´Ğ´Èëµ½ ImageName2Excel ÖĞ
-	'*****¸ñÊ½ÎªÍ¼Æ¬ÎÄ¼şÃû£¨²»º¬À©Õ¹Ãû£© À©Õ¹Ãû ÕÕÆ¬Î»ÖÃ ÎÊÌâÎ»ÖÃ ÎÊÌâÃèÊö£¨ÊÖ¶¯²åÈë£©
-	'*****ÕÕÆ¬Î»ÖÃ ÎÊÌâÎ»ÖÃ ÎÊÌâÃèÊö  ĞèÒª£¨ÊÖ¶¯²åÈë£©£¬²»ÒªµÄÕÕÆ¬²»ĞèÒªÌîĞ´
+	'*****å°†å·¥ä½œç›®å½•ä¸‹å›¾ç‰‡æ–‡ä»¶åè®°å½•ä¸‹æ¥å†™å…¥åˆ° ImageName2Excel ä¸­
+	'*****æ ¼å¼ä¸ºå›¾ç‰‡æ–‡ä»¶åï¼ˆä¸å«æ‰©å±•åï¼‰ æ‰©å±•å ç…§ç‰‡ä½ç½® é—®é¢˜ä½ç½® é—®é¢˜æè¿°ï¼ˆæ‰‹åŠ¨æ’å…¥ï¼‰
+	'*****ç…§ç‰‡ä½ç½® é—®é¢˜ä½ç½® é—®é¢˜æè¿°  éœ€è¦ï¼ˆæ‰‹åŠ¨æ’å…¥ï¼‰ï¼Œä¸è¦çš„ç…§ç‰‡ä¸éœ€è¦å¡«å†™
 Sub ImagesName2Excel
 
 	'Dim oFile, oFiles
@@ -197,14 +197,14 @@ Sub ImagesName2Excel
 		Set oExcelTempWB  =  oExcelApp.Workbooks.Add
 		Set oExcelTempSheet = oExcelTempWB.Worksheets(2)
 		With oExcelTempSheet
-				'Const sSheetImageName 	= 	"ÕÕÆ¬ÎÊÌâ¶ÔÓ¦"   
-				'Const sSheetPlbName 	= 	"ÓĞÎÊÌâÃèÊöµÄÕÕÆ¬"
-				'Const sColPerson		=	"ÅÄÉãÈË"		'Column = 1
-				'Const sColImageBaseName		=	"ÕÕÆ¬Ãû"		'Column = 2
-				'Const sColImageExt		=	"ÕÕÆ¬À©Õ¹Ãû"	'Column = 3
-				'Const sColSite			=	"Î»ÖÃ"			'Column = 4
-				'Const sColPlbSite		=	"ÎÊÌâÎ»ÖÃ"		'Column = 5
-				'Const sColPlbDescription	=	"ÎÊÌâÃèÊö"	'Column = 6
+				'Const sSheetImageName 	= 	"ç…§ç‰‡é—®é¢˜å¯¹åº”"   
+				'Const sSheetPlbName 	= 	"æœ‰é—®é¢˜æè¿°çš„ç…§ç‰‡"
+				'Const sColPerson		=	"æ‹æ‘„äºº"		'Column = 1
+				'Const sColImageBaseName		=	"ç…§ç‰‡å"		'Column = 2
+				'Const sColImageExt		=	"ç…§ç‰‡æ‰©å±•å"	'Column = 3
+				'Const sColSite			=	"ä½ç½®"			'Column = 4
+				'Const sColPlbSite		=	"é—®é¢˜ä½ç½®"		'Column = 5
+				'Const sColPlbDescription	=	"é—®é¢˜æè¿°"	'Column = 6
 			.Name = sSheetPlbName
 			.Cells(1,1).value = sColPerson 
 			.Cells(1,2).value = sColImageBaseName 
@@ -263,7 +263,7 @@ Sub ImagesName2Excel
 	Set oExcelApp  =   nothing
 End Sub
 
-'°´ÕÕÄ¿Â¼ÃûÀ´²éÕÒ£¬·µ»ØÖµÎªÊı×éÀïÃæµÚ¼¸¸ö£¬·µ»ØÖµÎª-1±íÊ¾ÕÒ²»µ½
+'æŒ‰ç…§ç›®å½•åæ¥æŸ¥æ‰¾ï¼Œè¿”å›å€¼ä¸ºæ•°ç»„é‡Œé¢ç¬¬å‡ ä¸ªï¼Œè¿”å›å€¼ä¸º-1è¡¨ç¤ºæ‰¾ä¸åˆ°
 Function FoundPersonByFolder( sFolerName )
 	Dim i
 	FoundPersonByFolder = -1
@@ -273,7 +273,7 @@ Function FoundPersonByFolder( sFolerName )
 	FoundPersonByFolder = i
 End Function
 
-'°´ÕÕÈËÃûÀ´²éÕÒ£¬·µ»ØÖµÎªÊı×éÀïÃæµÚ¼¸¸ö£¬·µ»ØÖµÎª-1±íÊ¾ÕÒ²»µ½
+'æŒ‰ç…§äººåæ¥æŸ¥æ‰¾ï¼Œè¿”å›å€¼ä¸ºæ•°ç»„é‡Œé¢ç¬¬å‡ ä¸ªï¼Œè¿”å›å€¼ä¸º-1è¡¨ç¤ºæ‰¾ä¸åˆ°
 Function FoundPerson( sPerson )
 	Dim i
 	FoundPerson = -1
@@ -299,14 +299,14 @@ Sub RenameImagesFromExcel
 	Set oRange = oSheetImageName.UsedRange
 	Set oRangePlbName = oSheetPlbName.UsedRange
 	Set img = CreateObject("ImageMagickObject.MagickImage.1")
-				'Const sSheetImageName 	= 	"ÕÕÆ¬ÎÊÌâ¶ÔÓ¦"   
-				'Const sSheetPlbName 	= 	"ÓĞÎÊÌâÃèÊöµÄÕÕÆ¬"
-				'Const sColPerson		=	"ÅÄÉãÈË"		'Column = 1
-				'Const sColImageBaseName		=	"ÕÕÆ¬Ãû"		'Column = 2
-				'Const sColImageExt		=	"ÕÕÆ¬À©Õ¹Ãû"	'Column = 3
-				'Const sColSite			=	"Î»ÖÃ"			'Column = 4
-				'Const sColPlbSite		=	"ÎÊÌâÎ»ÖÃ"		'Column = 5
-				'Const sColPlbDescription	=	"ÎÊÌâÃèÊö"	'Column = 6
+				'Const sSheetImageName 	= 	"ç…§ç‰‡é—®é¢˜å¯¹åº”"   
+				'Const sSheetPlbName 	= 	"æœ‰é—®é¢˜æè¿°çš„ç…§ç‰‡"
+				'Const sColPerson		=	"æ‹æ‘„äºº"		'Column = 1
+				'Const sColImageBaseName		=	"ç…§ç‰‡å"		'Column = 2
+				'Const sColImageExt		=	"ç…§ç‰‡æ‰©å±•å"	'Column = 3
+				'Const sColSite			=	"ä½ç½®"			'Column = 4
+				'Const sColPlbSite		=	"é—®é¢˜ä½ç½®"		'Column = 5
+				'Const sColPlbDescription	=	"é—®é¢˜æè¿°"	'Column = 6
 	Dim sNewBaseName, sFullPath, sFullNewBaseName, sCurrentDirectory, Command
 	'sCurrentDirectory = oShell.CurrentDirectory
 	'oShell.CurrentDirectory = sWorkingPath
@@ -314,7 +314,7 @@ Sub RenameImagesFromExcel
 		If orw.Row <> 1 then
 			sPerson = oRange.Cells( orw.Row , 1)
 			iPerson = FoundPerson( sPerson) 
-			If iPerson <> -1 then 'ÕÒµ½
+			If iPerson <> -1 then 'æ‰¾åˆ°
 				sBaseName = oRange.Cells( orw.Row , 2)
 				sExt = oRange.Cells( orw.Row , 3)
 				sNewBaseName = oRange.Cells( orw.Row , 4) & " " & oRange.Cells( orw.Row , 5) & oRange.Cells( orw.Row , 6)
@@ -326,7 +326,7 @@ Sub RenameImagesFromExcel
 					Set oFile = oFso.GetFile(sFullPath & sBaseName & "." & sExt)
 					'StdOut.Echo  oFile.Path & "  filename:" & oFile.Name
 					If trim(sNewBaseName) <> "" Then  
-						'½«±íÖĞÊı¾İ¿½±´ Ìí¼Óµ½ WorkSheet(sSheetPlbName)ÖĞ
+						'å°†è¡¨ä¸­æ•°æ®æ‹·è´ æ·»åŠ åˆ° WorkSheet(sSheetPlbName)ä¸­
 						oSheetPlbName.Cells(oRangePlbName.Rows.Count+1+iFileRenamed,1).value = oRange.Cells( orw.Row,1).value
 						oSheetPlbName.Cells(oRangePlbName.Rows.Count+1+iFileRenamed,2).value = oRange.Cells( orw.Row,2).value
 						oSheetPlbName.Cells(oRangePlbName.Rows.Count+1+iFileRenamed,3).value = oRange.Cells( orw.Row,3).value
@@ -334,8 +334,8 @@ Sub RenameImagesFromExcel
 						oSheetPlbName.Cells(oRangePlbName.Rows.Count+1+iFileRenamed,5).value = oRange.Cells( orw.Row,5).value
 						oSheetPlbName.Cells(oRangePlbName.Rows.Count+1+iFileRenamed,6).value = oRange.Cells( orw.Row,6).value
 
-						'Èç¹ûÕÕÆ¬ÓĞÎÊÌâÃèÊöÔò±£´æµ½¹¤×÷Ä¿Â¼¡¢É¾³ıÕÕÆ¬EXIFĞÅÏ¢£¬Í¬Ê±¸üÃûÎªsPerson & " " & sBaseName & " " & sNewBaseName & "." & sExt 
-						'*****ËõĞ¡Í¼Æ¬
+						'å¦‚æœç…§ç‰‡æœ‰é—®é¢˜æè¿°åˆ™ä¿å­˜åˆ°å·¥ä½œç›®å½•ã€åˆ é™¤ç…§ç‰‡EXIFä¿¡æ¯ï¼ŒåŒæ—¶æ›´åä¸ºsPerson & " " & sBaseName & " " & sNewBaseName & "." & sExt 
+						'*****ç¼©å°å›¾ç‰‡
 						msgs = img.Convert( oFile.Path, _
 							"-strip","-resize","226x170", _
 							"-fill", "white", "-pointsize", "10", _
@@ -345,7 +345,7 @@ Sub RenameImagesFromExcel
 						oFile.Move PathCombine(sFullPath ,Original_Folder)
 						iFileRenamed = iFileRenamed + 1
 					Else
-						'Èç¹ûÎŞÕÕÆ¬ËµÃ÷ÔòÒÆ¶¯µ½Original_Folder 
+						'å¦‚æœæ— ç…§ç‰‡è¯´æ˜åˆ™ç§»åŠ¨åˆ°Original_Folder 
 						'StdOut.Echo sCFolder & "\" & Original_Folder & "\"
 						oFile.Move PathCombine(PathCombine(sWorkingPath ,aPerson(iPerson,1)) ,Original_Folder)
 						iFileRemoved = iFileRemoved + 1
@@ -366,7 +366,7 @@ Sub RenameImagesFromExcel
 	Set oExcelApp  =   nothing
 End Sub
 
-'°´ÕÕÄ£°åÉú³ÉExcelºÍWord¶½²é±¨¸æ
+'æŒ‰ç…§æ¨¡æ¿ç”ŸæˆExcelå’ŒWordç£æŸ¥æŠ¥å‘Š
 Sub CreateExcelWordFromTemplate
 	Dim Header , OrderCustom, MatchCase, Orientation, ColumnC
 	Dim plbSite, plbDescription, lastplbSite
@@ -380,7 +380,7 @@ Sub CreateExcelWordFromTemplate
 
 	bFileExists = oFso.FileExists(oShell.CurrentDirectory & "\" & ExcelTemplate)
 	If not bFileExists Then 
-		StdOut.Echo "ExcelÄ£°åÔÚÄÄ£¿"
+		StdOut.Echo "Excelæ¨¡æ¿åœ¨å“ªï¼Ÿ"
 		Exit Sub
 	Else
 		Set oFile = oFso.GetFile(oShell.CurrentDirectory & "\" & ExcelTemplate)
@@ -404,18 +404,18 @@ Sub CreateExcelWordFromTemplate
 		If sPerson = "" Then 
 			sPerson = aPerson(iPerson,0)
 		Else
-			sPerson = sPerson & "¡¢" & aPerson(iPerson,0)
+			sPerson = sPerson & "ã€" & aPerson(iPerson,0)
 		End If 
 	Next
-	oSheetGen.Cells(2,2).value = sPerson     'ÈËÔ±Ãû
-	'Const sSheetImageName 	= 	"ÕÕÆ¬ÎÊÌâ¶ÔÓ¦"   
-	'Const sSheetPlbName 	= 	"ÓĞÎÊÌâÃèÊöµÄÕÕÆ¬"
-	'Const sColPerson		=	"ÅÄÉãÈË"		'Column = 1
-	'Const sColImageBaseName		=	"ÕÕÆ¬Ãû"		'Column = 2
-	'Const sColImageExt		=	"ÕÕÆ¬À©Õ¹Ãû"	'Column = 3
-	'Const sColSite			=	"Î»ÖÃ"			'Column = 4
-	'Const sColPlbSite		=	"ÎÊÌâÎ»ÖÃ"		'Column = 5
-	'Const sColPlbDescription	=	"ÎÊÌâÃèÊö"	'Column = 6
+	oSheetGen.Cells(2,2).value = sPerson     'äººå‘˜å
+	'Const sSheetImageName 	= 	"ç…§ç‰‡é—®é¢˜å¯¹åº”"   
+	'Const sSheetPlbName 	= 	"æœ‰é—®é¢˜æè¿°çš„ç…§ç‰‡"
+	'Const sColPerson		=	"æ‹æ‘„äºº"		'Column = 1
+	'Const sColImageBaseName		=	"ç…§ç‰‡å"		'Column = 2
+	'Const sColImageExt		=	"ç…§ç‰‡æ‰©å±•å"	'Column = 3
+	'Const sColSite			=	"ä½ç½®"			'Column = 4
+	'Const sColPlbSite		=	"é—®é¢˜ä½ç½®"		'Column = 5
+	'Const sColPlbDescription	=	"é—®é¢˜æè¿°"	'Column = 6
 	For iRow = 2 to oSheetPlbName.UsedRange.Rows.Count
 		s1 = oSheetPlbName.UsedRange.Cells( iRow , 4)
 		s2 = oSheetPlbName.UsedRange.Cells( iRow , 5) & oSheetPlbName.UsedRange.Cells( iRow , 6)
@@ -424,20 +424,20 @@ Sub CreateExcelWordFromTemplate
 		oSheetGen.Cells(iRow + 2,3).value = s1
 		oSheetGen.Cells(iRow + 2,4).value = s2
 	Next 
-	'StdOut.Echo "ÓĞÎÊÌâÃèÊöµÄÕÕÆ¬ÓĞ" & oSheetGen.UsedRange.Rows.Count & "ĞĞ"
+	'StdOut.Echo "æœ‰é—®é¢˜æè¿°çš„ç…§ç‰‡æœ‰" & oSheetGen.UsedRange.Rows.Count & "è¡Œ"
 	'oSheetGen.UsedRange.EntireColumn.Autofit()
 	oExcelGenWB.Save
-	oExcelTempWB.Close '¹Ø±ÕIMAGENAME2EXCEL
+	oExcelTempWB.Close 'å…³é—­IMAGENAME2EXCEL
 	Set oExcelTempWB = nothing 
 	
-	'Sort ÅÅĞò
+	'Sort æ’åº
 	Header = 1 'use first row as column headings - (default) 1 = Yes, (?)2 = No
 	OrderCustom = 1 'index of custom sort order from Sort Options dialog box - (default) 1 = Normal
 	MatchCase = False 'True = case sensitive, (default) False = ignore case
 	Orientation = 1 '(default) 1 = top to bottom, (?)2 = left to right
 	Set ColumnC = oSheetGen.Range("C3")
 	Set oRangeGen = oSheetGen.UsedRange
-	'StdOut.Echo "Ê¹ÓÃĞĞÊı£º" & oSheetGen.UsedRange.Rows.Count
+	'StdOut.Echo "ä½¿ç”¨è¡Œæ•°ï¼š" & oSheetGen.UsedRange.Rows.Count
 	Set oRange = oRangeGen.Range("C3:D"& oRangeGen.Rows.Count)
 	'oRange.Select
 	oRange.Sort ColumnC, xlAscending, , , , , , Header, OrderCustom,  MatchCase, Orientation
@@ -446,15 +446,15 @@ Sub CreateExcelWordFromTemplate
 	Set oRangeGen = nothing
 	oExcelGenWB.Save
 
-	'***** Éú³ÉWord
-	'***** ¸ñÊ½ÎªÍ¼Æ¬ÎÄ¼şÃû£¨²»º¬À©Õ¹Ãû£©  À©Õ¹Ãû  ÕÕÆ¬ËµÃ÷£¨ÊÖ¶¯²åÈë£©
+	'***** ç”ŸæˆWord
+	'***** æ ¼å¼ä¸ºå›¾ç‰‡æ–‡ä»¶åï¼ˆä¸å«æ‰©å±•åï¼‰  æ‰©å±•å  ç…§ç‰‡è¯´æ˜ï¼ˆæ‰‹åŠ¨æ’å…¥ï¼‰
 	Set oRangeGen = oSheetGen.UsedRange
-	'StdOut.Echo "oRangeGenÊ¹ÓÃĞĞÊı£º" & oRangeGen.Rows.Count
+	'StdOut.Echo "oRangeGenä½¿ç”¨è¡Œæ•°ï¼š" & oRangeGen.Rows.Count
 	plbSite = ""
 	lastplbSite = ""
 	bFileExists = oFso.FileExists(oShell.CurrentDirectory  & "\" & WordTemplate)
 	If not bFileExists Then 
-		StdOut.Echo "WordÄ£°åÔÚÄÄ£¿"
+		StdOut.Echo "Wordæ¨¡æ¿åœ¨å“ªï¼Ÿ"
 		Exit Sub
 	Else
 		Set oFile = oFso.GetFile(oShell.CurrentDirectory  & "\" & WordTemplate)
@@ -472,14 +472,14 @@ Sub CreateExcelWordFromTemplate
 
 	For Each Bookmark in oWordGenDoc.Bookmarks
 		Select Case Bookmark.Name
-		Case "ÈÕÆÚ"
+		Case "æ—¥æœŸ"
 			'Bookmark.Range.Text = sDate
 			'.Goto wdGoToBookmark, ,  , Bookmark.Name
 			Bookmark.Select
 			Set oSelection = oWordApp.Selection
 			oSelection.TypeText sDate
-		Case "Â·Ïß"
-			'***** Excel ±íÖĞCÁĞÖĞ²»ÖØ¸´µÄÖµ
+		Case "è·¯çº¿"
+			'***** Excel è¡¨ä¸­Cåˆ—ä¸­ä¸é‡å¤çš„å€¼
 			Set oRange = oRangeGen.Range("C4:C"& oRangeGen.Rows.Count)
 			'oSelection.Goto wdGoToBookmark, ,  , Bookmark.Name
 			Bookmark.Select
@@ -492,69 +492,69 @@ Sub CreateExcelWordFromTemplate
 				If plbSite <> lastplbSite Then 
 					lastplbSite = plbSite
 					If orw.Row <> oRangeGen.Rows.Count Then 
-						oSelection.TypeText plbSite  & "£»"
+						oSelection.TypeText plbSite  & "ï¼›"
 					Else 
-						oSelection.TypeText plbSite  & "¡£"
+						oSelection.TypeText plbSite  & "ã€‚"
 					End If
 				End If
 			Next
-			'sRoute = Left(sRoute, len(sRoute)-1) & "¡£" 
+			'sRoute = Left(sRoute, len(sRoute)-1) & "ã€‚" 
 			'Bookmark.Range.Text = sRoute 
 			oSelection.TypeBackspace
-			oSelection.TypeText "¡£"
+			oSelection.TypeText "ã€‚"
 			Set oRange = nothing
-		Case "ÈËÔ±" 
+		Case "äººå‘˜" 
 			sPerson = ""
 			for iPerson = LBound(aPerson) to UBound(aPerson) -1
 				If sPerson = "" Then 
 					sPerson = aPerson(iPerson,0)
 				Else
-					sPerson = sPerson & "¡¢" & aPerson(iPerson,0)
+					sPerson = sPerson & "ã€" & aPerson(iPerson,0)
 				End If 
 			Next
 			Bookmark.Select
 			Set oSelection = oWordApp.Selection
 			oSelection.TypeText sPerson
-		Case "ÎÊÌâ" 
+		Case "é—®é¢˜" 
 			'oSelection.Goto wdGoToBookmark, ,  , Bookmark.Name
 			Bookmark.Select
 			Set oSelection = oWordApp.Selection
-			'***** Excel ±íÖĞCÁĞÖĞ²»ÖØ¸´µÄÖµ
+			'***** Excel è¡¨ä¸­Cåˆ—ä¸­ä¸é‡å¤çš„å€¼
 			Set oRange = oRangeGen.Range("C4:D"& oRangeGen.Rows.Count)
 
 			plbDescription = ""
 
 			iRowNums = oRange.Rows.Count 
-			'StdOut.Echo "ÎÊÌâiRowNums = " & iRowNums 
+			'StdOut.Echo "é—®é¢˜iRowNums = " & iRowNums 
 			iRow = 0
 			For Each orw in oRange.Rows
-				'StdOut.Echo "ÎÊÌâorw.Row = " & orw.Row 
+				'StdOut.Echo "é—®é¢˜orw.Row = " & orw.Row 
 				plbSite = oRangeGen.Cells(orw.Row,3).value
 				plbDescription = oRangeGen.Cells(orw.Row,4).value
 				If plbSite <> lastplbSite Then 
 					iRow = iRow + 1
 					lastplbSite = plbSite
-					'Èç¹ûµÚÒ»ĞĞÔò²»»»Ò»ĞĞ£¬·ñÔòÁíÆğÒ»¶Î
+					'å¦‚æœç¬¬ä¸€è¡Œåˆ™ä¸æ¢ä¸€è¡Œï¼Œå¦åˆ™å¦èµ·ä¸€æ®µ
 					If orw.Row <> 4 Then 
-						oSelection.TypeBackspace ' É¾³ı¡°£»¡±
-						oSelection.TypeText "¡£"
+						oSelection.TypeBackspace ' åˆ é™¤â€œï¼›â€
+						oSelection.TypeText "ã€‚"
 						oSelection.TypeParagraph
 					End If
-					oSelection.TypeText plbSite & "£º"
+					oSelection.TypeText plbSite & "ï¼š"
 					If orw.Row <> oRangeGen.Rows.Count Then 
-						oSelection.TypeText plbDescription & "£»"
+						oSelection.TypeText plbDescription & "ï¼›"
 					Else 
-						oSelection.TypeText plbDescription & "¡£"
+						oSelection.TypeText plbDescription & "ã€‚"
 					End If
 				Else 
 					If orw.Row <> oRangeGen.Rows.Count Then 
-						oSelection.TypeText plbDescription & "£»"
+						oSelection.TypeText plbDescription & "ï¼›"
 					Else 
-						oSelection.TypeText plbDescription & "¡£"
+						oSelection.TypeText plbDescription & "ã€‚"
 					End If
 				End If
 			Next
-			'****ÎÊÌâÒÔµØµã½øĞĞ±àºÅ
+			'****é—®é¢˜ä»¥åœ°ç‚¹è¿›è¡Œç¼–å·
 			Bookmark.Select
 			oSelection.MoveDown wdParagraph, iRow, wdExtend
 			oSelection.Range.ListFormat.ApplyListTemplate oWordApp.ListGalleries( _
@@ -562,8 +562,8 @@ Sub CreateExcelWordFromTemplate
 				wdListApplyToWholeList, wdWord10ListBehavior
 
 			Set oRange = nothing
-		Case "Í¼Æ¬" 
-			'*****²åÈëÍ¼Æ¬ ²¢×ª»»³É±í¸ñ 
+		Case "å›¾ç‰‡" 
+			'*****æ’å…¥å›¾ç‰‡ å¹¶è½¬æ¢æˆè¡¨æ ¼ 
 			'oSelection.Goto wdGoToBookmark, ,  , Bookmark.Name
 			Bookmark.Select
 			Set oSelection = oWordApp.Selection
@@ -606,7 +606,7 @@ Sub CreateExcelWordFromTemplate
 			oWordApp.ScreenUpdating = True
 			Set oShapes = nothing
 		Case else
-			StdOut.Echo "ÓĞ²»ÈÏÊ¶µÄÊéÇ©¡£²»ÒªÍæÎÒÁË¡£" & Bookmark.Name
+			StdOut.Echo "æœ‰ä¸è®¤è¯†çš„ä¹¦ç­¾ã€‚ä¸è¦ç©æˆ‘äº†ã€‚" & Bookmark.Name
 			'Exit Sub
 		End select
 	Next
